@@ -16,7 +16,7 @@ data Robot =
           } deriving (Eq)
 
 instance Show Robot where
-  show NotPlacedRobot = "Not on the table"
+  show NotPlacedRobot = "Place Robot First"
   show r = L.intercalate "," asString
     where
       toString = [show . _xPos, show . _yPos, show . _direction]

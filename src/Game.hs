@@ -9,18 +9,23 @@ import Control.Lens.Combinators
 import Robot as R
 import Table
 import Type as T
-
+import Control.Monad.Trans.State
 
 data Game = Game { _table :: Table } deriving (Show)
 
 makeLenses ''Game
 
+type GameState = State Game String
+type IOGameState = StateT Game IO String
+
+initTable :: Integer -> Integer -> Table
 initTable w h = Table {
   _width = w
   , _height = h
   , _robot = R.NotPlacedRobot
 }
 
+initGame :: Game
 initGame = Game { _table = initTable 5 5 }
 
 executeCommand :: T.Command -> Game -> Game
@@ -32,3 +37,19 @@ executeCommand T.Report = id
 
 report :: Game -> String
 report game = show $ view (table . robot) game
+
+execute :: T.Command -> GameState
+execute T.Report = get >>= return . report
+execute command = do
+  game <- get
+  newGame <- return $ executeCommand command game
+  put newGame
+  return ""
+
+executeIO :: T.Command -> IOGameState
+executeIO T.Report = get >>= return . report
+executeIO command = do
+  game <- get
+  newGame <- return $ executeCommand command game
+  put newGame
+  return ""

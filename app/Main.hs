@@ -1,9 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Lib
 import Robot
-import FileIO
 import Data.Char as C
 import System.Environment
 import CommandParser as CP

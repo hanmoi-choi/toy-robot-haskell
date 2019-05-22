@@ -20,29 +20,45 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/toy-robot#readme>
 
 dependencies:
-- base >= 4.7 && < 5
+  - base >= 4.7 && < 5
+  - lens
+  - trifecta
+  - raw-strings-qq
+  - bytestring
+  - hspec
+  - text
+  - containers
+  - mtl
+  - transformers
 
 library:
   source-dirs: src
+  exposed-modules:
+    - Robot
+    - Type
+    - CommandParser
+    - Game
+    - Table
 
 executables:
   toy-robot-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - toy-robot
+      - toy-robot
 
 tests:
   toy-robot-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
     dependencies:
-    - toy-robot
+      - toy-robot
+      - hedgehog

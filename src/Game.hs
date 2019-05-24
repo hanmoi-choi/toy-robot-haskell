@@ -15,6 +15,7 @@ data Game = Game { _table :: Table } deriving (Show)
 
 makeLenses ''Game
 
+-- love the use of the state monad :)
 type GameState = State Game String
 type IOGameState = StateT Game IO String
 
@@ -42,6 +43,7 @@ execute :: T.Command -> GameState
 execute T.Report = get >>= return . report
 execute command = do
   game <- get
+  -- when using <- and return like this, it can just be `let newGame = executeCommand command game`
   newGame <- return $ executeCommand command game
   put newGame
   return ""

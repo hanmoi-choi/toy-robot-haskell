@@ -8,6 +8,11 @@ import Control.Lens.TH
 import Control.Lens.Combinators
 import qualified Type as T
 
+{-
+Personally I think a Robot does not have a concept of being placed or not.
+Rather the table has a concept of having a robot placed ON it or not.
+Essentially this is the concept of a table bleeding into the robot logic.
+-}
 data Robot =
   NotPlacedRobot
   | Robot { _xPos :: Integer
@@ -15,6 +20,11 @@ data Robot =
             , _direction :: T.Direction
           } deriving (Eq)
 
+-- This is more technically incorrect stuff, where using Show is nice, but the
+-- actual definition of Show is `The result of show is a syntactically correct
+-- Haskell expression containing only constants` In other words, it needs to
+-- output something like valid Haskell syntax as a String eg Robot 1 2 North .
+-- The rule is that read . show = id
 instance Show Robot where
   show NotPlacedRobot = "Place Robot First"
   show r = L.intercalate "," asString

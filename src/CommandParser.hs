@@ -9,6 +9,8 @@ import Type as T
 skipWhitespaces :: Parser ()
 skipWhitespaces = skipMany (char ' ' <|> char '\n')
 
+-- slightly more succinct is using $> from Data.Functor, which doesn't require a `f b`, just a `b`
+-- eg. `string "north" $> T.North`
 parseNorth :: Parser T.Direction
 parseNorth = string "north" *> return T.North
 

@@ -14,7 +14,6 @@ import Text.Trifecta
 --   args <- getArgs
 --   case args of
 --     [fname] -> do
-import Data.Functor
 --       content <- readFile fname
 --       print content
 --       let commands = CP.parseCommandString $ map C.toLower content
@@ -35,7 +34,9 @@ runGame game = do
     _ -> do
       let command = CP.parseCommandString $ map C.toLower str
       newGame <-  case command of
-                    -- might be nice to represent the existance of a command as a `Maybe Command` so the parser combinator concerns are isolated in the CommandParser module
+                    -- might be nice to represent the existance of a command as
+                    -- a `Maybe Command` so the parser combinator concerns are
+                    -- isolated in the CommandParser module
                     Success c -> do
                       -- very minor, but mapM is effectively deprecated. `traverse` is the same thing but only requires an Applicative rather than a Monad
                       let (report, newGame) = runState (mapM G.execute c) game

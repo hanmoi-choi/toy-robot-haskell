@@ -11,7 +11,7 @@ import qualified Type as T
 {-
 Personally I think a Robot does not have a concept of being placed or not.
 Rather the table has a concept of having a robot placed ON it or not.
-Essentially this is the concept of a table bleeding into the robot logic.
+To me this is the concept of a table bleeding into the robot logic.
 -}
 data Robot =
   NotPlacedRobot

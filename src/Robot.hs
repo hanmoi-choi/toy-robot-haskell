@@ -9,18 +9,18 @@ import Control.Lens.Combinators
 import qualified Type as T
 
 data Robot =
-  NotPlacedRobot
-  | Robot { _xPos :: Integer
-            , _yPos :: Integer
-            , _direction :: T.Direction
-          } deriving (Eq)
+    NotPlacedRobot
+        | Robot { _xPos :: Integer
+                , _yPos :: Integer
+                , _direction :: T.Direction
+                } deriving (Eq)
 
 instance Show Robot where
-  show NotPlacedRobot = "Place Robot First"
-  show r = L.intercalate "," asString
-    where
-      toString = [show . _xPos, show . _yPos, show . _direction]
-      asString = map (\f -> f r) toString
+    show NotPlacedRobot = "Place Robot First"
+    show r = L.intercalate "," asString
+        where
+          toString = [show . _xPos, show . _yPos, show . _direction]
+          asString = map (\f -> f r) toString
 
 makeLenses ''Robot
 

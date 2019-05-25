@@ -8,18 +8,7 @@ import CommandParser as CP
 import Game as G
 import Control.Monad.Trans.State
 import Text.Trifecta
-
--- main :: IO ()
--- main = do
---   args <- getArgs
---   case args of
---     [fname] -> do
---       content <- readFile fname
---       print content
---       let commands = CP.parseCommandString $ map C.toLower content
---       print commands
---       -- print $ evalState (mapM G.execute commands) G.initGame
---     _ -> putStrLn "Usage: toy-robot filename"
+import Data.Functor
 
 main :: IO ()
 main = do
@@ -35,9 +24,9 @@ runGame game = do
       let command = CP.parseCommandString $ map C.toLower str
       newGame <-  case command of
                     Success c -> do
-                      let (report, newGame) = runState (mapM G.execute c) game
+                      let (report, newGame) = runState (traverse G.execute c) game
                       case head report of
                         "" -> return newGame
-                        _ -> (print $ head report) *> return newGame
-                    _ -> putStrLn "Wrong command string" *> return game
+                        _ -> (print $ head report) $> newGame
+                    _ -> putStrLn "Wrong command string" $> game
       runGame newGame

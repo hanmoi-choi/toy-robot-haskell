@@ -39,17 +39,17 @@ report :: Game -> String
 report game = show $ view (table . robot) game
 
 execute :: T.Command -> GameState
-execute T.Report = get >>= return . report
+execute T.Report = report <$> get
 execute command = do
   game <- get
-  newGame <- return $ executeCommand command game
+  let newGame = executeCommand command game
   put newGame
   return ""
 
 executeIO :: T.Command -> IOGameState
-executeIO T.Report = get >>= return . report
+executeIO T.Report = report <$> get
 executeIO command = do
   game <- get
-  newGame <- return $ executeCommand command game
+  let newGame = executeCommand command game
   put newGame
   return ""

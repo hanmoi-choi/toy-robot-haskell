@@ -3,6 +3,7 @@ module CommandParser where
 import Control.Applicative
 import Text.RawString.QQ
 import Text.Trifecta
+import Data.Functor
 
 import Type as T
 
@@ -10,34 +11,33 @@ skipWhitespaces :: Parser ()
 skipWhitespaces = skipMany (char ' ' <|> char '\n')
 
 parseNorth :: Parser T.Direction
-parseNorth = string "north" *> return T.North
+parseNorth = string "north" $> T.North
 
 parseSouth :: Parser T.Direction
-parseSouth = string "south" *> return T.South
+parseSouth = string "south" $> T.South
 
 parseEast :: Parser T.Direction
-parseEast = string "east" *> return T.East
+parseEast = string "east" $> T.East
 
 parseWest :: Parser T.Direction
-parseWest = string "west" *> return T.West
+parseWest = string "west" $> T.West
 
 parseDirection :: Parser T.Direction
 parseDirection = do
   skipWhitespaces
-  direction <- parseNorth <|> parseSouth <|> parseEast <|> parseWest
-  return direction
+  parseNorth <|> parseSouth <|> parseEast <|> parseWest
 
 parseMoveCommand :: Parser T.Command
-parseMoveCommand = string "move" *> return T.Move
+parseMoveCommand = string "move" $> T.Move
 
 parseLeftCommand :: Parser T.Command
-parseLeftCommand = string "left" *> return T.Left
+parseLeftCommand = string "left" $> T.Left
 
 parseRightCommand :: Parser T.Command
-parseRightCommand = string "right" *> return T.Right
+parseRightCommand = string "right" $> T.Right
 
 parseReportCommand :: Parser T.Command
-parseReportCommand = string "report" *> return T.Report
+parseReportCommand = string "report" $> T.Report
 
 parsePlaceCommand :: Parser T.Command
 parsePlaceCommand = do
@@ -49,8 +49,7 @@ parsePlaceCommand = do
   yPos <- integer
   _ <- char ','
   skipMany $ char ' '
-  direction <- parseDirection
-  return $ Place xPos yPos direction
+  Place xPos yPos <$> parseDirection
 
 parseCommand =
   parsePlaceCommand
